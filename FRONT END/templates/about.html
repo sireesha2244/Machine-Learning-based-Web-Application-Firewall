@@ -1,0 +1,95 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link " href="{{url_for('home')}}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{url_for('about')}}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="{{url_for('model')}}">Model</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('prediction')}}">Prediction</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('index')}}">Logout</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="margin-top: 80px; min-height: 80vh;">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="feature-card p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-project-diagram fa-3x" style="color: var(--primary-cyan);"></i>
+                    <h1 class="fw-bold mt-3" style="color: white;">About The Project</h1>
+                    <p class="text-muted">Adaptive ML-Based Web Application Firewall with Explainable AI</p>
+                </div>
+
+                <div class="about-content" style="color: var(--text-light); line-height: 1.7;">
+                    <p>
+                        Traditional Web Application Firewalls (WAFs) depend on static, rule‑based detection mechanisms that struggle to identify evolving cyber threats. This project presents an <strong>Adaptive Machine Learning‑Based Web Application Firewall</strong> that integrates <strong>Explainable AI (XAI)</strong> for threat detection.
+                    </p>
+
+                    <p>
+                        The system employs multiple machine learning algorithms including <strong>XGBoost, LightGBM, and Random Forest</strong> to analyze web traffic patterns and detect:
+                    </p>
+
+                    <ul>
+                        <li><strong>SQL Injection (SQLi)</strong></li>
+                        <li><strong>Cross‑Site Scripting (XSS)</strong></li>
+                        <li><strong>Local File Inclusion (LFI)</strong></li>
+                    </ul>
+
+                    <p>
+                        Unlike signature‑based approaches, the model learns malicious patterns directly from traffic data, eliminating manual rule maintenance. Using a <strong>benchmark intrusion detection dataset from Kaggle</strong>, the system extracts network and content‑based features to identify attack signatures.
+                    </p>
+
+                    <div class="row my-4 g-3">
+                        <div class="col-md-4">
+                            <div class="stats-card text-center p-3">
+                                <i class="fas fa-database fa-2x mb-2" style="color: var(--primary-cyan);"></i>
+                                <h5>Dataset</h5>
+                                <p class="small text-muted">Kaggle Intrusion Detection<br>15+ numerical features</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card text-center p-3">
+                                <i class="fas fa-brain fa-2x mb-2" style="color: var(--primary-cyan);"></i>
+                                <h5>Algorithms</h5>
+                                <p class="small text-muted">XGBoost • LightGBM • Random Forest<br>Ensemble learning</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card text-center p-3">
+                                <i class="fas fa-shield-alt fa-2x mb-2" style="color: var(--primary-cyan);"></i>
+                                <h5>Attacks Detected</h5>
+                                <p class="small text-muted">SQLi • XSS • LFI</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>
+                        <strong>SHAP (SHapley Additive exPlanations)</strong> provides transparent, human‑interpretable justifications for each blocking decision, building trust in the AI‑driven security mechanism. A <strong>Flask‑based dashboard</strong> visualizes attack trends, model confidence scores, and analytical insights for security monitoring.
+                    </p>
+
+                    <p>
+                        Built with <strong>Python, XGBoost, LightGBM, Random Forest, Scikit‑learn, and SQLite</strong>, this solution offers educational institutions and small businesses a cost‑effective, scalable, and interpretable web application firewall that adapts to emerging threat patterns while maintaining transparency through explainable AI.
+                    </p>
+
+                    <div class="mt-4 text-center">
+                        <blockquote class="blockquote" style="border-left: 4px solid var(--primary-cyan); padding-left: 20px;">
+                            <p class="mb-0">"Interpretable ML‑based Threat Detection for Web Applications"</p>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

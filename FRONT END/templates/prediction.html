@@ -1,0 +1,168 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('home')}}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('about')}}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('model')}}">Model</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{url_for('prediction')}}">Prediction</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('index')}}">Logout</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="margin-top: 80px;">
+    <!-- Result Alert -->
+    {% if result %}
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="alert 
+                {% if 'Error' in result %}alert-warning
+                {% else %}alert-info{% endif %} 
+                text-center fw-bold fs-5" role="alert">
+                <i class="fas {% if 'Error' in result %}fa-exclamation-circle{% else %}fa-shield-alt{% endif %} me-2"></i>
+                {{ result }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- SHAP Explanation -->
+    {% if shap_html %}
+    <div class="row justify-content-center mb-5">
+        <div class="col-12">
+            <div class="feature-card p-4">
+                <h3 class="text-center mb-4" style="color: var(--primary-cyan);">
+                    <i class="fas fa-lightbulb me-2"></i>SHAP Model Explanation
+                </h3>
+                {{ shap_html | safe }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Prediction Form -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="feature-card p-4 p-lg-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-robot fa-3x" style="color: var(--primary-cyan);"></i>
+                    <h2 class="fw-bold mt-3" style="color: white;">Threat Prediction</h2>
+                    <p class="text-muted">Enter the 15 network traffic features to detect attacks</p>
+                </div>
+
+                <form action="{{url_for('prediction')}}" method="post">
+                    <div class="row g-3">
+                        <!-- Feature 1: Src IP dec -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Source IP (decimal)</label>
+                            <input type="number" step="any" name="Src IP dec" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 19216811" required>
+                        </div>
+
+                        <!-- Feature 2: Bwd Packet Length Std -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Backward Packet Length Std</label>
+                            <input type="number" step="any" name="Bwd Packet Length Std" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 12.5" required>
+                        </div>
+
+                        <!-- Feature 3: Packet Length Max -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Packet Length Max</label>
+                            <input type="number" step="any" name="Packet Length Max" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 1500" required>
+                        </div>
+
+                        <!-- Feature 4: Flow Duration -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Flow Duration</label>
+                            <input type="number" step="any" name="Flow Duration" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 123456" required>
+                        </div>
+
+                        <!-- Feature 5: Average Packet Size -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Average Packet Size</label>
+                            <input type="number" step="any" name="Average Packet Size" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 512" required>
+                        </div>
+
+                        <!-- Feature 6: Bwd Packet Length Max -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Backward Packet Length Max</label>
+                            <input type="number" step="any" name="Bwd Packet Length Max" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 1024" required>
+                        </div>
+
+                        <!-- Feature 7: Bwd Packet Length Mean -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Backward Packet Length Mean</label>
+                            <input type="number" step="any" name="Bwd Packet Length Mean" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 256" required>
+                        </div>
+
+                        <!-- Feature 8: Packet Length Mean -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Packet Length Mean</label>
+                            <input type="number" step="any" name="Packet Length Mean" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 400" required>
+                        </div>
+
+                        <!-- Feature 9: Packet Length Std -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Packet Length Std</label>
+                            <input type="number" step="any" name="Packet Length Std" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 100" required>
+                        </div>
+
+                        <!-- Feature 10: Packet Length Variance -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Packet Length Variance</label>
+                            <input type="number" step="any" name="Packet Length Variance" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 10000" required>
+                        </div>
+
+                        <!-- Feature 11: Bwd Segment Size Avg -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Backward Segment Size Avg</label>
+                            <input type="number" step="any" name="Bwd Segment Size Avg" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 128" required>
+                        </div>
+
+                        <!-- Feature 12: Fwd Packet Length Max -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Forward Packet Length Max</label>
+                            <input type="number" step="any" name="Fwd Packet Length Max" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 1400" required>
+                        </div>
+
+                        <!-- Feature 13: Fwd Packet Length Mean -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Forward Packet Length Mean</label>
+                            <input type="number" step="any" name="Fwd Packet Length Mean" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 600" required>
+                        </div>
+
+                        <!-- Feature 14: Flow IAT Max -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Flow IAT Max</label>
+                            <input type="number" step="any" name="Flow IAT Max" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 50000" required>
+                        </div>
+
+                        <!-- Feature 15: Subflow Bwd Bytes -->
+                        <div class="col-md-6">
+                            <label class="form-label text-light">Subflow Backward Bytes</label>
+                            <input type="number" step="any" name="Subflow Bwd Bytes" class="form-control bg-dark text-light border-secondary" placeholder="e.g., 2048" required>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12 text-center mt-4">
+                            <button type="submit" class="btn btn-glow-alt px-5 py-2">
+                                <i class="fas fa-shield-alt me-2"></i>Predict Threat
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

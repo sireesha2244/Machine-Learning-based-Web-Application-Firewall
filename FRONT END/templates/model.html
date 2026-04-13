@@ -1,0 +1,193 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('home')}}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('about')}}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{url_for('model')}}">Model</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('prediction')}}">Prediction</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('index')}}">Logout</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="margin-top: 80px;">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <i class="fas fa-brain fa-3x mb-3" style="color: var(--primary-cyan);"></i>
+            <h1 class="fw-bold" style="color: white;">Machine Learning Models</h1>
+            <p class="text-muted col-lg-8 mx-auto">High‑performance ensemble classifiers for SQLi, LFI, and XSS detection</p>
+        </div>
+    </div>
+
+    <!-- Model Cards -->
+    <div class="row g-4 mb-5">
+        <!-- XGBoost Card -->
+        <div class="col-md-4">
+            <div class="feature-card h-100 text-center p-4">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt fa-3x" style="color: #ffaa00;"></i>
+                </div>
+                <h3 class="feature-title">XGBoost</h3>
+                <p class="text-muted small">Extreme Gradient Boosting</p>
+                <p class="text-light">Optimized gradient boosting with regularization. Achieves near‑perfect accuracy on the test set.</p>
+                <hr class="border-secondary">
+                <div class="d-flex justify-content-between">
+                    <span class="stats-label">Accuracy</span>
+                    <span class="stats-number" style="font-size: 1.5rem;">99.95%</span>
+                </div>
+                <div class="mt-3 small text-muted">
+                    <span>Precision: 1.00</span> • <span>Recall: 1.00</span> • <span>F1: 1.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LightGBM Card -->
+        <div class="col-md-4">
+            <div class="feature-card h-100 text-center p-4">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf fa-3x" style="color: #00ff9d;"></i>
+                </div>
+                <h3 class="feature-title">LightGBM</h3>
+                <p class="text-muted small">Light Gradient Boosting Machine</p>
+                <p class="text-light">Histogram‑based learning for fast training and low memory usage. Achieved the highest accuracy.</p>
+                <hr class="border-secondary">
+                <div class="d-flex justify-content-between">
+                    <span class="stats-label">Accuracy</span>
+                    <span class="stats-number" style="font-size: 1.5rem;">99.97%</span>
+                </div>
+                <div class="mt-2 small text-muted">
+                    <div>Class 0 (XSS): 1.00/1.00/1.00</div>
+                    <div>Class 1 (LFI): 1.00/1.00/1.00</div>
+                    <div>Class 2 (SQLi): 1.00/1.00/1.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Random Forest Card -->
+        <div class="col-md-4">
+            <div class="feature-card h-100 text-center p-4">
+                <div class="feature-icon">
+                    <i class="fas fa-tree fa-3x" style="color: #ff6b6b;"></i>
+                </div>
+                <h3 class="feature-title">Random Forest</h3>
+                <p class="text-muted small">Ensemble of Decision Trees</p>
+                <p class="text-light">Robust and interpretable. Slightly lower but still excellent performance.</p>
+                <hr class="border-secondary">
+                <div class="d-flex justify-content-between">
+                    <span class="stats-label">Accuracy</span>
+                    <span class="stats-number" style="font-size: 1.5rem;">99.88%</span>
+                </div>
+                <div class="mt-2 small text-muted">
+                    <div>Class 0 (XSS): 1.00 / 0.99 / 1.00</div>
+                    <div>Class 1 (LFI): 1.00 / 1.00 / 1.00</div>
+                    <div>Class 2 (SQLi): 0.99 / 1.00 / 1.00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ensemble & SHAP Section -->
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="feature-card p-4 h-100">
+                <h4 class="mb-3"><i class="fas fa-cubes me-2" style="color: var(--primary-cyan);"></i>Ensemble Voting</h4>
+                <p>The final prediction can be obtained through <strong>soft voting</strong> of the three classifiers, weighting by their cross‑validated accuracy. This ensemble further improves robustness.</p>
+                <div class="stats-card mt-3 p-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-chart-pie fa-2x me-3" style="color: var(--accent-green);"></i>
+                        <div>
+                            <div class="stats-number" style="font-size: 2rem;">99.93%</div>
+                            <div class="stats-label">Ensemble Accuracy (estimated)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="feature-card p-4 h-100">
+                <h4 class="mb-3"><i class="fas fa-magic me-2" style="color: #ffaa00;"></i>Explainable AI with SHAP</h4>
+                <p>SHAP (SHapley Additive exPlanations) interprets each prediction, showing which features contributed most. This builds trust in the model's decisions.</p>
+                <div class="mt-3">
+                    <span class="attack-badge-safe"><i class="fas fa-check"></i> Global interpretability</span>
+                    <span class="attack-badge-safe ms-2"><i class="fas fa-check"></i> Local explanations</span>
+                </div>
+                <div class="mt-4 text-center">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    <a href="{{url_for('prediction')}}" class="text-decoration-none" style="color: var(--primary-cyan);">Try a prediction with SHAP</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Comparison Table -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="feature-card p-4">
+                <h4 class="mb-3"><i class="fas fa-table me-2" style="color: var(--primary-cyan);"></i>Performance Comparison</h4>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Class</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                                <th>Accuracy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="4"><strong>XGBoost</strong></td>
+                                <td>0 (XSS)</td>
+                                <td>1.00</td>
+                                <td>1.00</td>
+                                <td>1.00</td>
+                                <td rowspan="4">99.95%</td>
+                            </tr>
+                            <tr><td>1 (LFI)</td><td>1.00</td><td>1.00</td><td>1.00</td></tr>
+                            <tr><td>2 (SQLi)</td><td>1.00</td><td>1.00</td><td>1.00</td></tr>
+                            <tr><td colspan="4" class="text-muted">(estimated)</td></tr>
+
+                            <tr>
+                                <td rowspan="3"><strong>LightGBM</strong></td>
+                                <td>0 (XSS)</td>
+                                <td>1.00</td>
+                                <td>1.00</td>
+                                <td>1.00</td>
+                                <td rowspan="3">99.97%</td>
+                            </tr>
+                            <tr><td>1 (LFI)</td><td>1.00</td><td>1.00</td><td>1.00</td></tr>
+                            <tr><td>2 (SQLi)</td><td>1.00</td><td>1.00</td><td>1.00</td></tr>
+
+                            <tr>
+                                <td rowspan="3"><strong>Random Forest</strong></td>
+                                <td>0 (XSS)</td>
+                                <td>1.00</td>
+                                <td>0.99</td>
+                                <td>1.00</td>
+                                <td rowspan="3">99.88%</td>
+                            </tr>
+                            <tr><td>1 (LFI)</td><td>1.00</td><td>1.00</td><td>1.00</td></tr>
+                            <tr><td>2 (SQLi)</td><td>0.99</td><td>1.00</td><td>1.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted small mt-2">Metrics based on the test set (11,418 samples) from the Kaggle intrusion detection dataset.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

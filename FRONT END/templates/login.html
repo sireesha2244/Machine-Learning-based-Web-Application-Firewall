@@ -1,0 +1,70 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('index')}}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('register')}}">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{{url_for('login')}}">Login</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="margin-top: 80px; min-height: 80vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="feature-card p-4 p-lg-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-lock fa-3x" style="color: var(--primary-cyan);"></i>
+                    <h2 class="fw-bold mt-3" style="color: white;">Welcome Back</h2>
+                    <p class="text-muted">Login to access your dashboard</p>
+                </div>
+
+                <form action="{{url_for('login')}}" method="post" onsubmit="return validateForm()">
+                    <div class="mb-3">
+                        <label for="email" class="form-label text-light">Email address</label>
+                        <input type="email" class="form-control bg-dark text-light border-secondary" 
+                               id="email" name="email" placeholder="name@example.com" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label text-light">Password</label>
+                        <input type="password" class="form-control bg-dark text-light border-secondary" 
+                               id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-glow-alt py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                    </div>
+
+                    <p class="text-center text-muted mt-4 mb-0">
+                        Don't have an account? 
+                        <a href="{{url_for('register')}}" class="text-decoration-none" style="color: var(--primary-cyan);">Register</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Simple validation script (optional, since fields are required) -->
+<script>
+function validateForm() {
+    var email = document.getElementById('email').value.trim();
+    var password = document.getElementById('password').value;
+
+    if (email === "" || password === "") {
+        alert("Both fields are required.");
+        return false;
+    }
+    return true;
+}
+</script>
+{% endblock %}

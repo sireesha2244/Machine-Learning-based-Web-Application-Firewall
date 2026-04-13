@@ -1,0 +1,284 @@
+{% extends 'index.html' %}
+
+{% block navbar %}
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item">
+        <a class="nav-link active" href="{{url_for('home')}}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('about')}}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="{{url_for('model')}}">Model</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('prediction')}}">Prediction</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('index')}}">Logout</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="margin-top: 80px;">
+    <!-- Welcome Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h2 class="fw-bold" style="color: white;">Dashboard</h2>
+                    <p class="text-muted">Welcome back, <span style="color: var(--primary-cyan);">{{ session['user_name'] | default('User') }}</span>. Here's your security overview.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="attack-badge-safe"><i class="fas fa-shield-alt me-1"></i> System Active</span>
+                    <span class="attack-badge"><i class="fas fa-clock me-1"></i> Last Scan: 2 min ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <i class="fas fa-shield-halos fa-2x" style="color: var(--primary-cyan);"></i>
+                </div>
+                <div>
+                    <div class="stats-number">1,284</div>
+                    <div class="stats-label">Total Threats Blocked</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <i class="fas fa-bug fa-2x" style="color: #ff6b6b;"></i>
+                </div>
+                <div>
+                    <div class="stats-number">847</div>
+                    <div class="stats-label">SQL Injections</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <i class="fas fa-code fa-2x" style="color: #ffaa00;"></i>
+                </div>
+                <div>
+                    <div class="stats-number">312</div>
+                    <div class="stats-label">XSS Attacks</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="stats-card d-flex align-items-center">
+                <div class="flex-shrink-0 me-3">
+                    <i class="fas fa-file fa-2x" style="color: #00ff9d;"></i>
+                </div>
+                <div>
+                    <div class="stats-number">125</div>
+                    <div class="stats-label">LFI Attempts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts & Model Confidence -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="chart-container">
+                <h4 class="mb-3"><i class="fas fa-chart-line me-2" style="color: var(--primary-cyan);"></i>Threat Trends (Last 7 Days)</h4>
+                <canvas id="threatTrendsChart" style="width:100%; max-height: 300px;"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="feature-card h-100">
+                <h4 class="mb-3"><i class="fas fa-robot me-2" style="color: var(--accent-green);"></i>Model Performance</h4>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between">
+                        <span>XGBoost</span>
+                        <span>98.3%</span>
+                    </div>
+                    <div class="progress" style="height: 8px; background-color: #2a2f3c;">
+                        <div class="progress-bar" style="width: 98.3%; background-color: var(--primary-cyan);"></div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between">
+                        <span>LightGBM</span>
+                        <span>96.7%</span>
+                    </div>
+                    <div class="progress" style="height: 8px; background-color: #2a2f3c;">
+                        <div class="progress-bar" style="width: 96.7%; background-color: var(--primary-cyan);"></div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between">
+                        <span>Random Forest</span>
+                        <span>94.2%</span>
+                    </div>
+                    <div class="progress" style="height: 8px; background-color: #2a2f3c;">
+                        <div class="progress-bar" style="width: 94.2%; background-color: var(--primary-cyan);"></div>
+                    </div>
+                </div>
+                <div class="mt-4 p-3" style="background: rgba(0,212,255,0.05); border-radius: 12px;">
+                    <p class="small text-muted mb-1">Ensemble Accuracy</p>
+                    <h3 class="fw-bold" style="color: var(--accent-green);">97.8% <span class="small text-muted">avg</span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Threats & XAI Example -->
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="feature-card">
+                <h4 class="mb-3"><i class="fas fa-history me-2" style="color: var(--primary-cyan);"></i>Recent Threat Intelligence</h4>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Attack Type</th>
+                                <th>Source IP</th>
+                                <th>Confidence</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12:34:22</td>
+                                <td><span class="attack-badge">SQLi</span></td>
+                                <td>192.168.1.105</td>
+                                <td>99%</td>
+                                <td><i class="fas fa-check-circle text-success"></i> Blocked</td>
+                            </tr>
+                            <tr>
+                                <td>12:28:07</td>
+                                <td><span class="attack-badge">XSS</span></td>
+                                <td>10.0.0.23</td>
+                                <td>94%</td>
+                                <td><i class="fas fa-check-circle text-success"></i> Blocked</td>
+                            </tr>
+                            <tr>
+                                <td>12:15:41</td>
+                                <td><span class="attack-badge">LFI</span></td>
+                                <td>172.16.8.12</td>
+                                <td>87%</td>
+                                <td><i class="fas fa-check-circle text-success"></i> Blocked</td>
+                            </tr>
+                            <tr>
+                                <td>11:59:13</td>
+                                <td><span class="attack-badge-safe">Normal</span></td>
+                                <td>203.0.113.45</td>
+                                <td>—</td>
+                                <td><i class="fas fa-check text-muted"></i> Allowed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-2">
+                    <a href="{{url_for('prediction')}}" class="btn btn-sm btn-glow">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="feature-card h-100">
+                <h4 class="mb-3"><i class="fas fa-lightbulb me-2" style="color: #ffaa00;"></i>Latest SHAP Explanation</h4>
+                <div class="p-3" style="background: rgba(0,0,0,0.3); border-radius: 12px;">
+                    <p class="mb-2"><strong>Request Blocked:</strong> SQL Injection</p>
+                    <p class="small text-muted mb-2">Feature contributions:</p>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2">
+                            <span class="d-flex justify-content-between">
+                                <span>payload_length = 245</span>
+                                <span style="color: #ff6b6b;">+0.42</span>
+                            </span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-danger" style="width: 80%;"></div>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <span class="d-flex justify-content-between">
+                                <span>special_chars_ratio = 0.45</span>
+                                <span style="color: #ff6b6b;">+0.35</span>
+                            </span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-danger" style="width: 70%;"></div>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <span class="d-flex justify-content-between">
+                                <span>contains_select = 1</span>
+                                <span style="color: #ff6b6b;">+0.28</span>
+                            </span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-danger" style="width: 55%;"></div>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <span class="d-flex justify-content-between">
+                                <span>url_depth = 3</span>
+                                <span style="color: #00ff9d;">-0.05</span>
+                            </span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-success" style="width: 10%;"></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <p class="mt-3 mb-0"><i class="fas fa-shield-alt me-1" style="color: var(--primary-cyan);"></i> Confidence: <strong>98.7%</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="stats-card d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <i class="fas fa-cog me-2" style="color: var(--primary-cyan);"></i>
+                    <span class="fw-bold">Quick Actions</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-sm btn-glow">Run Manual Scan</a>
+                    <a href="#" class="btn btn-sm btn-glow-alt">View Reports</a>
+                    <a href="{{url_for('prediction')}}" class="btn btn-sm btn-glow">Test Prediction</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const ctx = document.getElementById('threatTrendsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [
+                { label: 'SQLi', data: [12, 19, 15, 22, 24, 18, 15], borderColor: '#ff6b6b', tension: 0.3, fill: false },
+                { label: 'XSS', data: [8, 12, 10, 17, 20, 14, 9], borderColor: '#ffaa00', tension: 0.3, fill: false },
+                { label: 'LFI', data: [4, 6, 5, 9, 11, 7, 5], borderColor: '#00ff9d', tension: 0.3, fill: false }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { labels: { color: '#e0e0e0' } }
+            },
+            scales: {
+                x: { ticks: { color: '#8a8f9c' }, grid: { color: '#2a2f3c' } },
+                y: { ticks: { color: '#8a8f9c' }, grid: { color: '#2a2f3c' } }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

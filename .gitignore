@@ -1,0 +1,7 @@
+env/
+venv/
+__pycahce__/
+*.pyc
+models/*.pkl
+*.csv
+.DS_Store
